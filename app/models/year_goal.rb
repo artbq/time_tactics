@@ -1,0 +1,2 @@
+class YearGoal < Goal
+end

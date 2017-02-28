@@ -1,0 +1,2 @@
+class MonthGoal < Goal
+end

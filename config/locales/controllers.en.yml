@@ -1,0 +1,20 @@
+en:
+  controllers:
+    application:
+      filters:
+        require_logged_in_user:
+          alert: Please log in.
+        require_logged_out_user:
+          alert: You need to log out to do that.
+    registrations:
+      actions:
+        create:
+          welcome: "Welcome, %{username}!"
+    logins:
+      actions:
+        create:
+          welcome_back: "Welcome back, %{username}!"
+    logouts:
+      actions:
+        new:
+          bye: "Bye, %{username}."

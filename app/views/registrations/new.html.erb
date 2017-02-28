@@ -1,0 +1,16 @@
+<h1>Registration</h1>
+
+<%= form_for @registration do |f| %>
+  <%= render partial: "shared/errors", locals: {object: @registration} %>
+
+  <%= f.label :username %><br/>
+  <%= f.text_field :username %><br/><br/>
+
+  <%= f.label :password %><br/>
+  <%= f.password_field :password %><br/><br/>
+
+  <%= f.label :password_confirmation %><br/>
+  <%= f.password_field :password_confirmation %><br/><br/>
+
+  <%= f.submit t("views.registrations.new.submit") %>
+<% end %>

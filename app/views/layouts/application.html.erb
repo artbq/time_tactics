@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TimeTactics</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag fingerprinted_asset("application"), media: "all" %>
+
+    <%= javascript_include_tag fingerprinted_asset("application") %>
+  </head>
+
+
+  <body>
+    <div class="notice"><%= flash[:notice] %></div>
+    <div class="alert"><%= flash[:alert] %></div>
+
+    <div>
+      <% if logged_in? %>
+        <div class="current_user">
+          Logged in as <span class="username"><%= current_user.username %></span>
+        </div>
+        <%= link_to t("views.layouts.application.log_out"), logout_path %>
+      <% else %>
+        <%= link_to t("views.layouts.application.log_in"), login_path %>
+        <%= t("or") %>
+        <%= link_to t("views.layouts.application.register"), registration_path %>
+      <% end %>
+    </div>
+
+    <%= yield %>
+  </body>
+</html>

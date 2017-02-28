@@ -1,0 +1,8 @@
+en:
+  activerecord:
+    errors:
+      models:
+        plan:
+          attributes:
+            base:
+              start_is_greater_than_or_equal_to_finish: start must be less than finish

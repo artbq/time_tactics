@@ -1,0 +1,13 @@
+en:
+  views:
+    layouts:
+      application:
+        log_in: Log in
+        log_out: Log out
+        register: Register
+    logins:
+      new:
+        submit: Log in
+    registrations:
+      new:
+        submit: Register

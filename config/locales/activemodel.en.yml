@@ -1,0 +1,12 @@
+en:
+  activemodel:
+    errors:
+      models:
+        login:
+          attributes:
+            username:
+              user_does_not_exist: isn't registered
+        registration:
+          attributes:
+            base:
+              password_does_not_match_confirmation: password doesn't match confirmation

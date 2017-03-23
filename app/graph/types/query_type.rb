@@ -3,11 +3,13 @@ module Types
     name "Query"
     description "The query root"
 
-    field :plan do
-      description "Find a plan by id"
-      type PlanType
-      argument :id, !types.ID
-      resolve ->(obj, args, ctx) { Plan.find(args["id"]) }
+    field :node, GraphQL::Relay::Node.field
+    field :nodes, GraphQL::Relay::Node.plural_field
+
+    field :calendar do
+      type CalendarType
+      argument :date, !types.String
+      resolve ->(obj, args, ctx) { DayCalendar.new(Date.parse(args["date"])) }
     end
   end
 end

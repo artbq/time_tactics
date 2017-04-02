@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   resources :logins, only: :create
 
   get "logout", to: "logouts#new", as: "logout"
+
+  post "graphql", to: "graphql#graphql", as: "graphql"
 end

@@ -1,4 +1,4 @@
-Schema = GraphQL::Schema.define do
+GraphSchema = GraphQL::Schema.define do
   query Types::QueryType
 
   id_from_object ->(object, type_definition, query_ctx) {

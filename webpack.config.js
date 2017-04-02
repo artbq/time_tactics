@@ -25,8 +25,15 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: "babel",
-        query: {presets: ["es2015", "react"]}
+        loader: "babel-loader",
+        query: {
+          plugins: ["react-relay"],
+          presets: [
+            "es2015",
+            "react",
+            "stage-0"
+          ]
+        }
       },
       {test: /\.css$/, loader: ExtractTextPlugin.extract("css!sass")}
     ]

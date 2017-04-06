@@ -6,8 +6,8 @@ import Plan from "./calendar/Plan";
 class Calendar extends React.Component {
   render() {
     const plans =
-      this.props.calendar.plans.edges.map(edge => {
-        return (<Plan key={edge.node.__dataID__} plan={edge.node} />);
+      this.props.calendar.plans.map(plan => {
+        return (<Plan key={plan.__dataID__} plan={plan} />);
       });
 
     return (
@@ -20,12 +20,8 @@ export default Relay.createContainer(Calendar, {
   fragments: {
     calendar: () => Relay.QL`
       fragment on Calendar {
-        plans(first: 10) {
-          edges {
-            node {
-              ${Plan.getFragment("plan", {})}
-            }
-          }
+        plans {
+          ${Plan.getFragment("plan")}
         }
       }
     `

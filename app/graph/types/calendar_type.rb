@@ -2,8 +2,6 @@ module Types
   CalendarType = GraphQL::ObjectType.define do
     name "Calendar"
 
-    connection :plans, PlanType.connection_type
-
-    field :plan, PlanType
+    field :plans, PlanType.to_list_type
   end
 end

@@ -7,10 +7,6 @@ class Calendar
     raise NotImplementedError
   end
 
-  def plan
-    plans.first
-  end
-
   private
 
   attr_reader :date

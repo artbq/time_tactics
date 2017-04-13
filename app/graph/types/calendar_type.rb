@@ -3,5 +3,6 @@ module Types
     name "Calendar"
 
     field :plans, PlanType.to_list_type
+    field :numberOfPlans, !types.Int
   end
 end

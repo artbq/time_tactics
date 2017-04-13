@@ -1,29 +1,32 @@
 import React from "react";
 import Relay from "react-relay";
 
-import Plan from "./calendar/Plan";
+import DayCalendar from "./Calendar/DayCalendar";
+
+class CalendarRoute extends Relay.Route {
+  static queries = {
+    calendar: () => Relay.QL`
+      query { calendar(date: $date) }
+    `
+  };
+
+  static paramDefinitions = {
+    date: {required: true}
+  };
+
+  static routeName = "Calendar";
+}
+
+export default Calendar;
 
 class Calendar extends React.Component {
   render() {
-    const plans =
-      this.props.calendar.plans.map(plan => {
-        return (<Plan key={plan.__dataID__} plan={plan} />);
-      });
+    const calendarRoute = new CalendarRoute({date: "2017-3-14"});
 
     return (
-      <div>{plans}</div>
+      <div>
+        <Relay.RootContainer Component={DayCalendar} route={calendarRoute} />
+      </div>
     );
   }
 }
-
-export default Relay.createContainer(Calendar, {
-  fragments: {
-    calendar: () => Relay.QL`
-      fragment on Calendar {
-        plans {
-          ${Plan.getFragment("plan")}
-        }
-      }
-    `
-  }
-});

@@ -25,6 +25,7 @@
     "build_p": "./node_modules/webpack/bin/webpack.js -p"
   },
   "dependencies": {
+    "moment": "^2.18.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-relay": "^0.10.0"

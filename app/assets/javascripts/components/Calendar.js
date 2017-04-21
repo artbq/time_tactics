@@ -40,7 +40,7 @@ class Calendar extends React.Component {
 
   render() {
     const calendarType = this.state.calendarType;
-    const calendarRoute = new CalendarRoute({date: "2017-03-14"});
+    const calendarRoute = new CalendarRoute({date: "2017-04-22"});
     const CalendarComponent = CALENDAR_COMPONENTS[calendarType];
 
     return (

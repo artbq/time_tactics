@@ -4,6 +4,8 @@ import moment from "moment";
 
 import MomentUtils from "../../utils/moment";
 
+import Week from "./MonthCalendar/Week";
+
 class MonthCalendar extends React.Component {
   constructor(props) {
     super(props);
@@ -18,10 +20,17 @@ class MonthCalendar extends React.Component {
     const date = this.state.date;
     const monthName = MomentUtils.monthName(date);
 
+    const daysByWeek = MomentUtils.monthDaysByWeek(date);
+
+    const weeks = daysByWeek.map(week => {
+      return (<Week key={week.weekNumber} {...week} />);
+    });
+
     return (
       <div>
         <h2>{monthName}</h2>
         <div>Number of plans: {numberOfPlans}</div>
+        <div>{weeks}</div>
       </div>
     );
   }

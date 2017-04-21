@@ -16,14 +16,15 @@ class MonthCalendar extends React.Component {
   }
 
   render() {
-    const numberOfPlans = this.props.calendar.numberOfPlans;
-    const date = this.state.date;
+    const { changeState } = this.props;
+    const { numberOfPlans } = this.props.calendar;
+    const { date } = this.state;
     const monthName = MomentUtils.monthName(date);
 
     const daysByWeek = MomentUtils.monthDaysByWeek(date);
 
     const weeks = daysByWeek.map(week => {
-      return (<Week key={week.weekNumber} {...week} />);
+      return (<Week key={week.weekNumber} {...week} changeState={changeState} />);
     });
 
     return (

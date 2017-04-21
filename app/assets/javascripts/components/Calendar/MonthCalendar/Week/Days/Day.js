@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 class Day extends React.Component {
   render() {
@@ -16,8 +17,14 @@ class Day extends React.Component {
     };
 
     return (
-      <button style={style}>{date}</button>
+      <button style={style} onClick={this.gotoDay.bind(this)}>{date}</button>
     );
+  }
+
+  gotoDay() {
+    const { year, month, date, changeState } = this.props;
+
+    changeState({date: moment([year, month, date]), calendarType: "day"});
   }
 }
 

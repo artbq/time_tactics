@@ -1,5 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
+import moment from "moment";
 
 import Plan from "./DayCalendar/Plan";
 
@@ -10,9 +11,12 @@ class DayCalendar extends React.Component {
         return (<Plan key={plan.__dataID__} plan={plan} />);
       });
 
+    const { date } = this.props;
+    const formattedDate = moment(date).format("DD MMMM YYYY");
+
     return (
       <div>
-        <h2>Day Calendar</h2>
+        <h2>{formattedDate}</h2>
 
         <div>{plans}</div>
       </div>

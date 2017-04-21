@@ -1,5 +1,6 @@
 import React from "react";
 import Relay from "react-relay";
+import moment from "moment";
 
 import DayCalendar from "./Calendar/DayCalendar";
 import WeekCalendar from "./Calendar/WeekCalendar";
@@ -33,14 +34,21 @@ class Calendar extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      calendarType: DAY_CALENDAR_TYPE
+    this.state = this.stateFromUrl();
+
+    window.onpopstate = () => {
+      this.setState(this.stateFromUrl());
     };
   }
 
   render() {
-    const calendarType = this.state.calendarType;
-    const calendarRoute = new CalendarRoute({date: "2017-04-22"});
+    const { date, calendarType } = this.state;
+
+    const calendarRoute = new CalendarRoute({
+      date: date.toISOString(),
+      changeState: this.changeState.bind(this)
+    });
+
     const CalendarComponent = CALENDAR_COMPONENTS[calendarType];
 
     return (
@@ -55,7 +63,31 @@ class Calendar extends React.Component {
   }
 
   selectCalendarType(type) {
-    return () => { this.setState({calendarType: type}) };
+    return () => { this.changeState({calendarType: type}) };
+  }
+
+  changeState(newState) {
+    const { date, calendarType } = this.state;
+
+    const newDate = newState.date || date;
+    const newCalendarType = newState.calendarType || calendarType;
+
+    if (newDate != date || newCalendarType != calendarType) {
+      this.setState({date: newDate, calendarType: newCalendarType});
+      let urlSearchParams = new URLSearchParams();
+      urlSearchParams.set("date", newDate.format("YYYY-MM-DD"));
+      urlSearchParams.set("calendarType", newCalendarType);
+      history.pushState({}, null, window.location.pathname + "?" + urlSearchParams.toString());
+    }
+  }
+
+  stateFromUrl() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    const date = urlSearchParams.has("date") ? moment(urlSearchParams.get("date")) : moment()
+    const calendarType = urlSearchParams.get("calendarType") || DAY_CALENDAR_TYPE
+
+    return { date, calendarType };
   }
 }
 

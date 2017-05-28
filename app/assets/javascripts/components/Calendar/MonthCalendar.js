@@ -4,6 +4,7 @@ import moment from "moment";
 
 import MomentUtils from "../../utils/moment";
 
+import WeekdayNames from "./MonthCalendar/WeekdayNames";
 import Week from "./MonthCalendar/Week";
 
 class MonthCalendar extends React.Component {
@@ -23,14 +24,25 @@ class MonthCalendar extends React.Component {
 
     const daysByWeek = MomentUtils.monthDaysByWeek(date);
 
+    // Style constants
+    const dayElementSideSize = 25;
+    const weekTitleWidth = 100;
+
     const weeks = daysByWeek.map(week => {
-      return (<Week key={week.weekNumber} {...week} changeState={changeState} />);
+      return (
+        <Week
+          key={week.weekNumber}
+          {...week}
+          changeState={changeState}
+        />
+      );
     });
 
     return (
       <div>
         <h2>{monthName}</h2>
         <div>Number of plans: {numberOfPlans}</div>
+        <div><WeekdayNames weekdayElementSideSize={dayElementSideSize} marginLeft={weekTitleWidth} /></div>
         <div>{weeks}</div>
       </div>
     );

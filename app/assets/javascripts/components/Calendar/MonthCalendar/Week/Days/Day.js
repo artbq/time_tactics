@@ -13,7 +13,8 @@ class Day extends React.Component {
       width: 25,
       height: 25,
       border: "none",
-      backgroundColor: "white"
+      backgroundColor: "white",
+      cursor: "pointer",
     };
 
     return (

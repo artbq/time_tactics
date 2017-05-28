@@ -5,8 +5,8 @@ class WeekTitle extends React.Component {
     const { weekNumber } = this.props;
 
     const style = {
-      display: "inline",
-      marginRight: 25
+      display: "inline-block",
+      width: 100
     };
 
     return (

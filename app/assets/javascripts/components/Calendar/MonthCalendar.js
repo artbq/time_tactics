@@ -25,14 +25,16 @@ class MonthCalendar extends React.Component {
     const daysByWeek = MomentUtils.monthDaysByWeek(date);
 
     // Style constants
-    const dayElementSideSize = 25;
-    const weekTitleWidth = 100;
+    const dayElementSideSize = 50;
+    const weekTitleWidth = 200;
 
     const weeks = daysByWeek.map(week => {
       return (
         <Week
           key={week.weekNumber}
           {...week}
+          dayElementSideSize={dayElementSideSize}
+          weekTitleWidth={weekTitleWidth}
           changeState={changeState}
         />
       );

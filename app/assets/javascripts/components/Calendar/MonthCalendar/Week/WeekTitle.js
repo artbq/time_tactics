@@ -2,11 +2,11 @@ import React from "react";
 
 class WeekTitle extends React.Component {
   render() {
-    const { weekNumber } = this.props;
+    const { weekNumber, width, } = this.props;
 
     const style = {
       display: "inline-block",
-      width: 100
+      width: width
     };
 
     return (

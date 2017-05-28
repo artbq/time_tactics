@@ -2,19 +2,19 @@ import moment from "moment";
 
 export default {
   firstDayOfMonth(date) {
-    date = moment(date);
+    date = moment.utc(date);
 
-    return moment([date.year(), date.month(), 1]);
+    return moment.utc([date.year(), date.month(), 1]);
   },
 
   monthName(date) {
-    date = moment(date);
+    date = moment.utc(date);
 
     return moment.months()[date.month()];
   },
 
   firstDayOfWeek(date) {
-    date = moment(date);
+    date = moment.utc(date);
 
     const diff = date.isoWeekday() - 1;
 
@@ -22,19 +22,19 @@ export default {
   },
 
   yearMonthDate(date) {
-    date = moment(date);
+    date = moment.utc(date);
 
     return {year: date.year(), month: date.month(), date: date.date()}
   },
 
   monthDaysByWeek(date) {
-    date = moment(date);
+    date = moment.utc(date);
 
     const thisMonth = date.month();
     const firstDayOfMonth = this.firstDayOfMonth(date);
     const firstDayOfFirstWeek = this.firstDayOfWeek(firstDayOfMonth);
 
-    const now = moment();
+    const now = moment.utc();
 
     return [1, 2, 3, 4, 5, 6].map(weekNumber => {
       const days = [1, 2, 3, 4, 5, 6, 7].map(dayNumber => {

@@ -4,10 +4,10 @@ import Day from "./Days/Day";
 
 class Days extends React.Component {
   render() {
-    const { days, changeState } = this.props;
+    const { days, dayElementSideSize, changeState, } = this.props;
 
     const dayElements = days.map(day => {
-      return (<Day key={day.date} {...day} changeState={changeState} />);
+      return (<Day key={day.date} {...day} sideSize={dayElementSideSize} changeState={changeState} />);
     });
 
     const style = {

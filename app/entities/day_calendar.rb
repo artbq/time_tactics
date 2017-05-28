@@ -1,7 +1,8 @@
 class DayCalendar < Calendar
   def plans
-    interval = date..(date + 1)
-    query = Plan.arel_table[:start].in(interval).or(Plan.arel_table[:finish].in(interval))
-    Plan.where(query)
+    # TODO: Use SQL; specs
+    Plan.all.select do |plan|
+      plan.start.to_date <= date.to_date && plan.finish.to_date >= date.to_date
+    end
   end
 end

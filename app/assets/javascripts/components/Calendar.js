@@ -84,7 +84,7 @@ class Calendar extends React.Component {
   stateFromUrl() {
     const urlSearchParams = new URLSearchParams(window.location.search);
 
-    const date = urlSearchParams.has("date") ? moment(urlSearchParams.get("date")) : moment()
+    const date = urlSearchParams.has("date") ? moment.utc(urlSearchParams.get("date")) : moment()
     const calendarType = urlSearchParams.get("calendarType") || DAY_CALENDAR_TYPE
 
     return { date, calendarType };

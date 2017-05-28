@@ -5,12 +5,12 @@ import Days from "./Week/Days";
 
 class Week extends React.Component {
   render() {
-    const { weekNumber, days, changeState } = this.props;
+    const { weekNumber, days, changeState, dayElementSideSize, weekTitleWidth, } = this.props;
 
     return (
       <div>
-        <WeekTitle weekNumber={weekNumber} />
-        <Days days={days} changeState={changeState} />
+        <WeekTitle weekNumber={weekNumber} width={weekTitleWidth} />
+        <Days days={days} dayElementSideSize={dayElementSideSize} changeState={changeState} />
       </div>
     );
   }

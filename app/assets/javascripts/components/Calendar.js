@@ -19,12 +19,12 @@ const CALENDAR_COMPONENTS = {
 class CalendarRoute extends Relay.Route {
   static queries = {
     calendar: () => Relay.QL`
-      query { calendar(date: $date) }
+      query { calendar(spec: $spec) }
     `
   };
 
   static paramDefinitions = {
-    date: {required: true}
+    spec: {required: true}
   };
 
   static routeName = "Calendar";
@@ -44,8 +44,11 @@ class Calendar extends React.Component {
   render() {
     const { date, calendarType } = this.state;
 
+    const isoDate = date.toISOString();
+
     const calendarRoute = new CalendarRoute({
-      date: date.toISOString(),
+      spec: `${this.state.calendarType}&${isoDate}`,
+      date: isoDate,
       changeState: this.changeState.bind(this)
     });
 

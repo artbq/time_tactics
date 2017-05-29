@@ -8,8 +8,12 @@ module Types
 
     field :calendar do
       type CalendarType
-      argument :date, !types.String
-      resolve ->(obj, args, ctx) { DayCalendar.new(Date.parse(args["date"])) }
+      argument :spec, !types.String
+      resolve ->(obj, args, ctx) do
+        # TODO: Raise appropriate error if invalid type or date
+        type, date = args["spec"].split("&")
+        Calendar.for(type, Time.parse(date).utc)
+      end
     end
   end
 end

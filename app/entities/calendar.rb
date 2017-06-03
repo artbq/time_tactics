@@ -2,13 +2,14 @@ require "constants"
 
 class Calendar
   CALENDAR_TYPE_ID_TO_CALENDAR_CLASS_MAP = {
-    Constants::DAY_CALENDAR_TYPE_ID => DayCalendar,
-    Constants::WEEK_CALENDAR_TYPE_ID => WeekCalendar,
-    Constants::MONTH_CALENDAR_TYPE_ID => MonthCalendar
+    Constants::DAY_CALENDAR_TYPE_ID => "DayCalendar",
+    Constants::WEEK_CALENDAR_TYPE_ID => "WeekCalendar",
+    Constants::MONTH_CALENDAR_TYPE_ID => "MonthCalendar"
   }
 
+  # TODO: Is there something better?
   def self.for(type, date)
-    CALENDAR_TYPE_ID_TO_CALENDAR_CLASS_MAP.fetch(type).new(date)
+    CALENDAR_TYPE_ID_TO_CALENDAR_CLASS_MAP.fetch(type).constantize.new(date)
   end
 
   def initialize(date)

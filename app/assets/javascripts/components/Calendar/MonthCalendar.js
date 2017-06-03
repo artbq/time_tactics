@@ -18,7 +18,7 @@ class MonthCalendar extends React.Component {
 
   render() {
     const { changeState } = this.props;
-    const { numberOfPlans } = this.props.calendar;
+    const numberOfPlans = this.props.calendar.number_of_plans;
     const { date } = this.state;
     const monthName = MomentUtils.monthName(date);
 
@@ -55,7 +55,7 @@ export default Relay.createContainer(MonthCalendar, {
   fragments: {
     calendar: () => Relay.QL`
       fragment on Calendar {
-        numberOfPlans
+        number_of_plans
       }
     `
   }

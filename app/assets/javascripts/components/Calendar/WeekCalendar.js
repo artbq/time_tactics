@@ -3,7 +3,7 @@ import Relay from "react-relay";
 
 class WeekCalendar extends React.Component {
   render() {
-    const numberOfPlans = this.props.calendar.numberOfPlans;
+    const numberOfPlans = this.props.calendar.number_of_plans;
 
     return (
       <div>
@@ -19,7 +19,7 @@ export default Relay.createContainer(WeekCalendar, {
   fragments: {
     calendar: () => Relay.QL`
       fragment on Calendar {
-        numberOfPlans
+        number_of_plans
       }
     `
   }

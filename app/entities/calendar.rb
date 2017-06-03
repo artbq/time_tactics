@@ -19,7 +19,7 @@ class Calendar
     raise NotImplementedError
   end
 
-  def numberOfPlans
+  def number_of_plans
     plans.count
   end
 

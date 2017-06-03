@@ -11,18 +11,18 @@ class Registration < ApplicationForm
   validate USERNAME_LENGTH
   validate USERNAME_FORMAT
   validates_length_of :password, minimum: 8
-  validate :username_is_not_taken!
-  validate :password_matches_confirmation!
+  validate :username_is_not_taken
+  validate :password_matches_confirmation
 
   private
 
-  def username_is_not_taken!
+  def username_is_not_taken
     return if username.blank?
 
     errors.add(:username, :taken) if User.find_by_username(username)
   end
 
-  def password_matches_confirmation!
+  def password_matches_confirmation
     return if password.blank?
 
     unless password == password_confirmation

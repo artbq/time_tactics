@@ -1,5 +1,6 @@
 require "password"
 
+# UserCreator is a class
 class UserCreator
   def initialize(user_form)
     @user_form = user_form

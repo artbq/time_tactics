@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import Relay from "react-relay";
 import moment from "moment";
 
+import Name from "./Plan/Name";
+import Timestamps from "./Plan/Timestamps";
+
 class Plan extends React.Component {
   static propTypes = {
     plan: PropTypes.object.isRequired,
@@ -14,21 +17,30 @@ class Plan extends React.Component {
 
     return (
       <div>
-        <span>{plan.name}</span>&nbsp;
-        <span>{this._formatDateTime(plan.start)}</span> - <span>{this._formatDateTime(plan.finish)}</span>
+        <Name name={this.name()}/>
+        <Timestamps start={this.start()} finish={this.finish()} referenceDateTime={this.referenceDate()}/>
       </div>
     );
   }
 
-  _formatDateTime(dateTimeString) {
-    const referenceDate = moment.utc(this.props.referenceDate);
-    const dateTime = moment.utc(dateTimeString, "YYYY-MM-DD HH:mm");
+  plan() {
+    return this.props.plan;
+  }
 
-    if (dateTime.isSame(referenceDate, "day")) {
-      return dateTime.local().format("HH:mm");
-    } else {
-      return dateTime.local().format("HH:mm, DD MMM YYYY");
-    }
+  name() {
+    return this.plan().name;
+  }
+
+  start() {
+    return moment(this.plan().start);
+  }
+
+  finish() {
+    return moment(this.plan().finish);
+  }
+
+  referenceDate() {
+    return moment(this.props.referenceDate);
   }
 }
 

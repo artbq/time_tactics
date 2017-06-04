@@ -2,6 +2,10 @@ exclude_paths:
   - db
   - app/channels/application_cable
 
+"app/controllers":
+  InstanceVariableAssumption:
+    enabled: false
+
 "app/helpers":
   UtilityFunction:
     enabled: false

@@ -16,6 +16,14 @@ class Calendar
     @date = date
   end
 
+  def id
+    "#{type}&#{date.iso8601}"
+  end
+
+  def type
+    CALENDAR_TYPE_ID_TO_CALENDAR_CLASS_MAP.key(self.class.name)
+  end
+
   def plans
     raise NotImplementedError
   end

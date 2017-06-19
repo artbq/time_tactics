@@ -1,5 +1,6 @@
 GraphSchema = GraphQL::Schema.define do
   query Types::QueryType
+  mutation Types::MutationType
 
   id_from_object ->(object, type_definition, query_ctx) {
     GraphQL::Schema::UniqueWithinType.encode(type_definition.name, object.id)

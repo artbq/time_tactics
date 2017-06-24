@@ -9,8 +9,8 @@ class Login < ApplicationForm
   attr_reader :user, :username
 
   validates_presence_of :username, :password
-  validate :user_exists!
-  validate :password_is_valid!
+  validate :user_exists
+  validate :password_is_valid
 
   def username=(username)
     @username = username
@@ -19,14 +19,14 @@ class Login < ApplicationForm
 
   private
 
-  def user_exists!
+  def user_exists
     return if username.blank?
 
     errors.add(:username, :user_does_not_exist) unless user
   end
 
-  def password_is_valid!
-    return if user.nil? || password.blank?
+  def password_is_valid
+    return unless user && password.present?
 
     unless Password.new(password).matches?(user.encrypted_password)
       errors.add(:password, :invalid)

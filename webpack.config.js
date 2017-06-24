@@ -3,6 +3,7 @@
 const fs = require("fs");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path = require("path");
 
 const production = process.argv.indexOf("-p") !== -1;
 const cssOutputTemplate = production ? "stylesheets/[name]-[hash].css" : "stylesheets/[name].css";
@@ -10,6 +11,12 @@ const jsOutputTemplate = production ? "javascripts/[name]-[hash].js" : "javascri
 
 module.exports = {
   context: __dirname + "/app/assets",
+
+  resolve: {
+    root: [
+      path.resolve("./app/assets/javascripts")
+    ]
+  },
 
   entry: {
     application: ["./javascripts/application.js", "./stylesheets/application.css"]
@@ -25,8 +32,15 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: "babel",
-        query: {presets: ["es2015", "react"]}
+        loader: "babel-loader",
+        query: {
+          plugins: ["react-relay"],
+          presets: [
+            "es2015",
+            "react",
+            "stage-0"
+          ]
+        }
       },
       {test: /\.css$/, loader: ExtractTextPlugin.extract("css!sass")}
     ]

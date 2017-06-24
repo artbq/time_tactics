@@ -3,7 +3,7 @@ import Relay from "react-relay";
 import moment from "moment";
 
 import Plan from "./DayCalendar/Plan";
-import CreatePlanMutation from "../../relay/mutations/CreatePlanMutation";
+import CreatePlanForm from "./DayCalendar/CreatePlanForm";
 
 class DayCalendar extends React.Component {
   render() {
@@ -20,27 +20,15 @@ class DayCalendar extends React.Component {
       <div>
         <h2>{formattedDate}</h2>
 
-        <input type="text" ref={(input) => { this.nameInput = input }}/><br/>
-        <input type="text" ref={(input) => { this.startInput = input }}/><br/>
-        <input type="text" ref={(input) => { this.finishInput = input }}/><br/>
-        <button onClick={this.handleAddPlanClick.bind(this)}>Add plan</button>
+        <CreatePlanForm
+          relay={this.props.relay}
+          date={this.props.date}
+          calendarID={this.props.calendar.id}
+        />
 
         <div>{plans}</div>
       </div>
     );
-  }
-
-  handleAddPlanClick() {
-    const mutationArgs = {
-      name: this.nameInput.value,
-      start: this.startInput.value,
-      finish: this.finishInput.value,
-      calendarType: "day",
-      calendarDate: this.props.date,
-      calendarID: this.props.calendar.id
-    };
-
-    this.props.relay.commitUpdate(new CreatePlanMutation(mutationArgs));
   }
 }
 

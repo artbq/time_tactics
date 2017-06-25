@@ -26,7 +26,7 @@ class Day extends React.Component {
   gotoDay() {
     const { year, month, date, changeState } = this.props;
 
-    changeState({date: moment.utc([year, month, date]), calendarType: "day"});
+    changeState({date: moment([year, month, date]), calendarType: "day"});
   }
 }
 

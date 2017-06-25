@@ -14,7 +14,7 @@ class DayCalendar extends React.Component {
         return (<Plan key={plan.__dataID__} plan={plan} referenceDate={date} />);
       });
 
-    const formattedDate = moment.utc(date).format("DD MMMM YYYY");
+    const formattedDate = moment(date).format("DD MMMM YYYY");
 
     return (
       <div>

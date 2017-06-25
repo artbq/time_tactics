@@ -5,6 +5,7 @@ import moment from "moment";
 import DayCalendar from "./Calendar/DayCalendar";
 import WeekCalendar from "./Calendar/WeekCalendar";
 import MonthCalendar from "./Calendar/MonthCalendar";
+import MomentObject from "moment_object";
 
 const DAY_CALENDAR_TYPE = "day";
 const WEEK_CALENDAR_TYPE = "week";
@@ -44,11 +45,11 @@ class Calendar extends React.Component {
   render() {
     const { date, calendarType } = this.state;
 
-    const isoDate = date.toISOString();
+    const formattedDate = MomentObject.serverFormat(date);
 
     const calendarRoute = new CalendarRoute({
-      spec: `${this.state.calendarType}&${isoDate}`,
-      date: isoDate,
+      spec: `${this.state.calendarType}&${formattedDate}`,
+      date: formattedDate,
       changeState: this.changeState.bind(this)
     });
 
@@ -60,7 +61,11 @@ class Calendar extends React.Component {
         <button onClick={this.selectCalendarType(WEEK_CALENDAR_TYPE)}>Week</button>
         <button onClick={this.selectCalendarType(MONTH_CALENDAR_TYPE)}>Month</button>
 
-        <Relay.RootContainer Component={CalendarComponent} route={calendarRoute} />
+        <Relay.RootContainer
+          Component={CalendarComponent}
+          route={calendarRoute}
+          forceFetch={true}
+        />
       </div>
     );
   }
@@ -78,7 +83,7 @@ class Calendar extends React.Component {
     if (newDate != date || newCalendarType != calendarType) {
       this.setState({date: newDate, calendarType: newCalendarType});
       let urlSearchParams = new URLSearchParams();
-      urlSearchParams.set("date", newDate.format("YYYY-MM-DD"));
+      urlSearchParams.set("date", MomentObject.serverFormat(newDate));
       urlSearchParams.set("calendarType", newCalendarType);
       history.pushState({}, null, window.location.pathname + "?" + urlSearchParams.toString());
     }
@@ -87,7 +92,7 @@ class Calendar extends React.Component {
   stateFromUrl() {
     const urlSearchParams = new URLSearchParams(window.location.search);
 
-    const date = urlSearchParams.has("date") ? moment.utc(urlSearchParams.get("date")) : moment()
+    const date = urlSearchParams.has("date") ? moment(urlSearchParams.get("date")) : moment()
     const calendarType = urlSearchParams.get("calendarType") || DAY_CALENDAR_TYPE
 
     return { date, calendarType };

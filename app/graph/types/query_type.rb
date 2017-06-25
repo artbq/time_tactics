@@ -12,7 +12,7 @@ module Types
       resolve ->(obj, args, ctx) do
         # TODO: Raise appropriate error if invalid type or date
         type, date = args["spec"].split("&")
-        Calendar.for(type, Time.parse(date).utc)
+        Calendar.for(type, Time.parse(date))
       end
     end
   end

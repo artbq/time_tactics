@@ -13,12 +13,12 @@ class Plan < ApplicationRecord
     ids =
       all.select do |plan|
         (
-          plan.start.localtime(offset) <= time.localtime(offset).at_end_of_day &&
-          plan.finish.localtime(offset) >= time.localtime(offset).at_beginning_of_day
+          plan.start.localtime(offset) <= time.at_end_of_day &&
+          plan.finish.localtime(offset) >= time.at_beginning_of_day
         ) ||
         (
-          plan.start.localtime(offset) <= time.localtime(offset).at_end_of_day &&
-          plan.finish.localtime(offset) >= time.localtime(offset).at_beginning_of_day
+          plan.start.localtime(offset) <= time.at_end_of_day &&
+          plan.finish.localtime(offset) >= time.at_beginning_of_day
         )
       end
 

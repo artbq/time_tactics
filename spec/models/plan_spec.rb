@@ -98,9 +98,7 @@ RSpec.describe Plan do
       DatabaseCleaner.clean
     end
 
-    context "with offset = '+03:00'" do
-      let(:offset) { "+03:00" }
-
+    shared_examples :with_EET_or_UTC_offset do
       it { is_expected.to be_a(ActiveRecord::Relation) }
 
       it "includes plan that starts and finishes on target date" do
@@ -126,6 +124,12 @@ RSpec.describe Plan do
       it "includes plan that starts before target date and finishes after target date" do
         is_expected.to include(@plan_6)
       end
+    end
+
+    context "with offset = '+03:00'" do
+      let(:offset) { "+03:00" }
+
+      include_examples :with_EET_or_UTC_offset
 
       it "includes plan that start before target date and finishes on target date in EET but before target date in UTC" do
         is_expected.to include(@plan_7)
@@ -135,9 +139,39 @@ RSpec.describe Plan do
     context "with offset = '+00:00'" do
       let(:offset) { "+00:00" }
 
+      include_examples :with_EET_or_UTC_offset
+
       it "doesn't include plan that start before target date and finishes on target date in EET but before target date in UTC" do
         is_expected.not_to include(@plan_7)
       end
+    end
+  end
+
+  describe ".order_by_start" do
+    subject { Plan.order_by_start }
+
+    let!(:user_1) { create(:user) }
+
+    let!(:plan_1) do
+      create(
+        :plan,
+        user: user_1,
+        start: Time.new(2017, 6, 25, 12, 0, 0, "+03:00"),
+        finish: Time.new(2017, 6, 25, 14, 0, 0, "+03:00")
+      )
+    end
+
+    let!(:plan_2) do
+      create(
+        :plan,
+        user: user_1,
+        start: Time.new(2017, 6, 25, 10, 0, 0, "+03:00"),
+        finish: Time.new(2017, 6, 25, 14, 0, 0, "+03:00")
+      )
+    end
+
+    it "orders plans by start" do
+      is_expected.to eq([plan_2, plan_1])
     end
   end
 end

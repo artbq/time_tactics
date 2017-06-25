@@ -23,6 +23,10 @@ class Plan < ApplicationRecord
     where(id: ids)
   end
 
+  def self.order_by_start
+    order(:start)
+  end
+
   private
 
   def start_is_less_than_finish

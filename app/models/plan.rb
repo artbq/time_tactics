@@ -7,16 +7,18 @@ class Plan < ApplicationRecord
   validates_presence_of :name, :start, :finish
   validate :start_is_less_than_finish
 
-  def self.by_day(date, offset = "+00:00")
+  def self.by_day(time)
+    offset = time.strftime("%:z")
+
     ids =
       all.select do |plan|
         (
-          plan.start.localtime(offset) <= date.to_time(:utc).localtime(offset).at_end_of_day &&
-          plan.finish.localtime(offset) >= date.to_time(:utc).localtime(offset).at_beginning_of_day
+          plan.start.localtime(offset) <= time.localtime(offset).at_end_of_day &&
+          plan.finish.localtime(offset) >= time.localtime(offset).at_beginning_of_day
         ) ||
         (
-          plan.start.localtime(offset) <= date.to_time(:utc).localtime(offset).at_end_of_day &&
-          plan.finish.localtime(offset) >= date.to_time(:utc).localtime(offset).at_beginning_of_day
+          plan.start.localtime(offset) <= time.localtime(offset).at_end_of_day &&
+          plan.finish.localtime(offset) >= time.localtime(offset).at_beginning_of_day
         )
       end
 

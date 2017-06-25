@@ -27,9 +27,9 @@ RSpec.describe Plan do
   end
 
   describe ".by_day", :skip_database_cleaner do
-    subject { described_class.by_day(target_date, offset) }
+    subject { described_class.by_day(target_time) }
 
-    let(:target_date) { Date.new(2017, 6, 25) }
+    let(:target_time) { Time.new(2017, 6, 25, 0, 0, 0, offset) }
 
     before(:all) do
       DatabaseCleaner.strategy = :transaction

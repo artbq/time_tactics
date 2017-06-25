@@ -25,4 +25,119 @@ RSpec.describe Plan do
 
     expect(plan).to be_valid
   end
+
+  describe ".by_day", :skip_database_cleaner do
+    subject { described_class.by_day(target_date, offset) }
+
+    let(:target_date) { Date.new(2017, 6, 25) }
+
+    before(:all) do
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.start
+
+      user_1 = create(:user)
+
+      @plan_1 =
+        create(
+          :plan,
+          user: user_1,
+          start: Time.new(2017, 6, 25, 12, 0, 0, "+03:00"),
+          finish: Time.new(2017, 6, 25, 14, 0, 0, "+03:00")
+        )
+
+      @plan_2 =
+        create(
+          :plan,
+          user: user_1,
+          start: Time.new(2017, 6, 24, 12, 0, 0, "+03:00"),
+          finish: Time.new(2017, 6, 24, 14, 0, 0, "+03:00")
+        )
+
+      @plan_3 =
+        create(
+          :plan,
+          user: user_1,
+          start: Time.new(2017, 6, 26, 12, 0, 0, "+03:00"),
+          finish: Time.new(2017, 6, 26, 14, 0, 0, "+03:00")
+        )
+
+      @plan_4 =
+        create(
+          :plan,
+          user: user_1,
+          start: Time.new(2017, 6, 24, 12, 0, 0, "+03:00"),
+          finish: Time.new(2017, 6, 25, 14, 0, 0, "+03:00")
+        )
+
+      @plan_5 =
+        create(
+          :plan,
+          user: user_1,
+          start: Time.new(2017, 6, 25, 12, 0, 0, "+03:00"),
+          finish: Time.new(2017, 6, 26, 14, 0, 0, "+03:00")
+        )
+
+      @plan_6 =
+        create(
+          :plan,
+          user: user_1,
+          start: Time.new(2017, 6, 24, 12, 0, 0, "+03:00"),
+          finish: Time.new(2017, 6, 26, 14, 0, 0, "+03:00")
+        )
+
+      @plan_7 =
+        create(
+          :plan,
+          user: user_1,
+          start: Time.new(2017, 6, 24, 12, 0, 0, "+03:00"),
+          finish: Time.new(2017, 6, 25, 1, 0, 0, "+03:00")
+        )
+    end
+
+    after(:all) do
+      DatabaseCleaner.clean
+    end
+
+    context "with offset = '+03:00'" do
+      let(:offset) { "+03:00" }
+
+      it { is_expected.to be_a(ActiveRecord::Relation) }
+
+      it "includes plan that starts and finishes on target date" do
+        is_expected.to include(@plan_1)
+      end
+
+      it "doesn't include plan that starts and finishes before target date" do
+        is_expected.not_to include(@plan_2)
+      end
+
+      it "doesn't include plan that starts and finishes after target date" do
+        is_expected.not_to include(@plan_3)
+      end
+
+      it "includes plan that starts before target date and finishes on target date" do
+        is_expected.to include(@plan_4)
+      end
+
+      it "includes plan that starts on target date and finishes after target date" do
+        is_expected.to include(@plan_5)
+      end
+
+      it "includes plan that starts before target date and finishes after target date" do
+        is_expected.to include(@plan_6)
+      end
+
+      it "includes plan that start before target date and finishes on target date in EET but before target date in UTC" do
+        is_expected.to include(@plan_7)
+      end
+    end
+
+    context "with offset = '+00:00'" do
+      let(:offset) { "+00:00" }
+
+      it "doesn't include plan that start before target date and finishes on target date in EET but before target date in UTC" do
+        is_expected.not_to include(@plan_7)
+      end
+    end
+  end
 end

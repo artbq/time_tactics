@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import CreatePlanMutation from "relay/mutations/CreatePlanMutation";
+import TimeString from "time_string";
 
 class CreatePlanForm extends React.Component {
   constructor(props) {
@@ -38,16 +39,16 @@ class CreatePlanForm extends React.Component {
           <label htmlFor="start">Start</label>
           <input
             id="start"
-            type="text"
+            type="datetime-local"
             value={this.state.start}
             onChange={this.changeHandler("start")}
           />
           <br/>
 
-          <label htmlFor="finish">finish</label>
+          <label htmlFor="finish">Finish</label>
           <input
             id="finish"
-            type="text"
+            type="datetime-local"
             value={this.state.finish}
             onChange={this.changeHandler("finish")}
           />
@@ -72,8 +73,8 @@ class CreatePlanForm extends React.Component {
     const mutationInput =
       {
         name: this.state.name,
-        start: this.state.start,
-        finish: this.state.finish,
+        start: TimeString.addOffset(this.state.start),
+        finish: TimeString.addOffset(this.state.finish),
         calendarType: "day",
         calendarDate: this.props.date,
         calendarID: this.props.calendarID

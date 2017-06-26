@@ -9,7 +9,7 @@ import Timestamps from "./Plan/Timestamps";
 class Plan extends React.Component {
   static propTypes = {
     plan: PropTypes.object.isRequired,
-    referenceDate: PropTypes.string.isRequired,
+    referenceDate: PropTypes.object.isRequired,
   };
 
   render() {
@@ -40,7 +40,7 @@ class Plan extends React.Component {
   }
 
   referenceDate() {
-    return moment(this.props.referenceDate);
+    return this.props.referenceDate;
   }
 }
 

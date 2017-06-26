@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Relay from "react-relay";
 import moment from "moment";
 
@@ -12,9 +13,13 @@ class MonthCalendar extends React.Component {
     super(props);
 
     this.state = {
-      date: MomentUtils.firstDayOfMonth(props.date)
+      date: MomentUtils.firstDayOfMonth(props.date),
     };
   }
+
+  static propTypes = {
+    date: PropTypes.object.isRequired
+  };
 
   render() {
     const { changeState } = this.props;

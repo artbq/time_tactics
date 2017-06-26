@@ -28,10 +28,10 @@ export default {
   },
 
   monthDaysByWeek(date) {
-    date = moment.utc(date);
+    date = moment(date);
 
     const thisMonth = date.month();
-    const firstDayOfMonth = this.firstDayOfMonth(date);
+    const firstDayOfMonth = date.startOf("month");
     const firstDayOfFirstWeek = this.firstDayOfWeek(firstDayOfMonth);
 
     const now = moment.utc();

@@ -4,7 +4,7 @@ class CalendarRoute extends Relay.Route {
   static queries = {
     calendar: () => Relay.QL`
       query { calendar(spec: $spec) }
-    `
+    `,
   };
 
   static paramDefinitions = {

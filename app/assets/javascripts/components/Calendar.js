@@ -2,61 +2,48 @@ import React from "react";
 import Relay from "react-relay";
 import moment from "moment";
 
-import DayCalendar from "./Calendar/DayCalendar";
-import WeekCalendar from "./Calendar/WeekCalendar";
-import MonthCalendar from "./Calendar/MonthCalendar";
-import Moment from "lib/moment";
-
-const DAY_CALENDAR_TYPE = "day";
-const WEEK_CALENDAR_TYPE = "week";
-const MONTH_CALENDAR_TYPE = "month";
+import CalendarSpec from "lib/calendar_spec";
+import * as calendarTypes from "constants/calendar_types";
+import CalendarRoute from "relay/routes/CalendarRoute";
+import { DayCalendar, WeekCalendar, MonthCalendar } from "./Calendar/index";
 
 const CALENDAR_COMPONENTS = {
-  [DAY_CALENDAR_TYPE]: DayCalendar,
-  [WEEK_CALENDAR_TYPE]: WeekCalendar,
-  [MONTH_CALENDAR_TYPE]: MonthCalendar
-}
-
-class CalendarRoute extends Relay.Route {
-  static queries = {
-    calendar: () => Relay.QL`
-      query { calendar(spec: $spec) }
-    `
-  };
-
-  static paramDefinitions = {
-    spec: {required: true}
-  };
-
-  static routeName = "Calendar";
-}
+  [calendarTypes.DAY]: DayCalendar,
+  [calendarTypes.WEEK]: WeekCalendar,
+  [calendarTypes.MONTH]: MonthCalendar,
+};
 
 class Calendar extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = this.stateFromUrl();
+    this.state = { calendarSpec: calendarSpecFromUrl() };
 
     window.onpopstate = () => {
-      this.setState(this.stateFromUrl());
+      this.setState({ calendarSpec: calendarSpecFromUrl() });
     };
   }
 
   render() {
-    const {calendarType, date} = this.state;
     const calendarRoute = new CalendarRoute({
-      spec: `${calendarType}&${Moment.format(date)}`,
-      date: date,
-      changeState: this.changeState.bind(this)
+      spec: this.calendarSpec().toString(),
+      date: this.calendarSpec().date,
+      navigateToAnotherCalendar: this.navigateToAnotherCalendar.bind(this),
     });
 
-    const CalendarComponent = CALENDAR_COMPONENTS[calendarType];
+    const CalendarComponent = CALENDAR_COMPONENTS[this.calendarSpec().calendarType];
 
     return (
       <div>
-        <button onClick={this.selectCalendarType(DAY_CALENDAR_TYPE)}>Day</button>
-        <button onClick={this.selectCalendarType(WEEK_CALENDAR_TYPE)}>Week</button>
-        <button onClick={this.selectCalendarType(MONTH_CALENDAR_TYPE)}>Month</button>
+        <button onClick={this.calendarTypeButtonClickHandler(calendarTypes.DAY)}>
+          Day
+        </button>
+        <button onClick={this.calendarTypeButtonClickHandler(calendarTypes.WEEK)}>
+          Week
+        </button>
+        <button onClick={this.calendarTypeButtonClickHandler(calendarTypes.MONTH)}>
+          Month
+        </button>
 
         <Relay.RootContainer
           Component={CalendarComponent}
@@ -67,33 +54,42 @@ class Calendar extends React.Component {
     );
   }
 
-  selectCalendarType(type) {
-    return () => { this.changeState({calendarType: type}) };
+  calendarSpec() {
+    return this.state.calendarSpec;
   }
 
-  changeState(newState) {
-    const { date, calendarType } = this.state;
+  calendarTypeButtonClickHandler(type) {
+    return () => {
+      const newCalendarSpec = this.calendarSpec().updateCalendarType(type);
 
-    const newDate = newState.date || date;
-    const newCalendarType = newState.calendarType || calendarType;
+      this.navigateToAnotherCalendar(newCalendarSpec);
+    };
+  }
 
-    if (newDate != date || newCalendarType != calendarType) {
-      this.setState({date: newDate, calendarType: newCalendarType});
-      let urlSearchParams = new URLSearchParams();
-      urlSearchParams.set("date", Moment.format(newDate));
-      urlSearchParams.set("calendarType", newCalendarType);
-      history.pushState({}, null, window.location.pathname + "?" + urlSearchParams.toString());
+  navigateToAnotherCalendar(newCalendarSpec) {
+    if (!this.calendarSpec().isEqual(newCalendarSpec)) {
+      const newUrl = window.location.pathname +
+        "?" +
+        newCalendarSpec.toUrlSearchParamsString();
+
+      history.pushState({}, null, newUrl);
+
+      this.setState({ calendarSpec: newCalendarSpec });
     }
   }
+}
 
-  stateFromUrl() {
-    const urlSearchParams = new URLSearchParams(window.location.search);
+function calendarSpecFromUrl() {
+  const urlSearchParams = new URLSearchParams(window.location.search);
 
-    const date = urlSearchParams.has("date") ? moment(urlSearchParams.get("date")) : moment()
-    const calendarType = urlSearchParams.get("calendarType") || DAY_CALENDAR_TYPE
+  const date = urlSearchParams.has(CalendarSpec.DATE) ?
+    moment(urlSearchParams.get(CalendarSpec.DATE)) :
+    moment();
 
-    return {date, calendarType};
-  }
+  const calendarType = urlSearchParams.get(CalendarSpec.CALENDAR_TYPE) ||
+    calendarTypes.DAY;
+
+  return new CalendarSpec(calendarType, date);
 }
 
 export default Calendar;

@@ -1,6 +1,8 @@
 import React from "react";
 import moment from "moment";
 
+import CalendarSpec from "lib/calendar_spec";
+
 class Day extends React.Component {
   render() {
     const { date, isThisMonth, isCurrentDate, sideSize } = this.props;
@@ -24,9 +26,9 @@ class Day extends React.Component {
   }
 
   gotoDay() {
-    const { year, month, date, changeState } = this.props;
+    const { year, month, date, navigateToAnotherCalendar } = this.props;
 
-    changeState({date: moment([year, month, date]), calendarType: "day"});
+    navigateToAnotherCalendar(CalendarSpec.day(moment([year, month, date])));
   }
 }
 

@@ -22,7 +22,7 @@ class MonthCalendar extends React.Component {
   };
 
   render() {
-    const { changeState } = this.props;
+    const { navigateToAnotherCalendar } = this.props;
     const numberOfPlans = this.props.calendar.number_of_plans;
     const { date } = this.state;
     const monthName = MomentUtils.monthName(date);
@@ -40,7 +40,7 @@ class MonthCalendar extends React.Component {
           {...week}
           dayElementSideSize={dayElementSideSize}
           weekTitleWidth={weekTitleWidth}
-          changeState={changeState}
+          navigateToAnotherCalendar={navigateToAnotherCalendar}
         />
       );
     });

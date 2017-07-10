@@ -17,10 +17,10 @@ class Calendar extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { calendarSpec: calendarSpecFromUrl() };
+    this.state = { calendarSpec: CalendarSpec.fromUrl() };
 
     window.onpopstate = () => {
-      this.setState({ calendarSpec: calendarSpecFromUrl() });
+      this.setState({ calendarSpec: CalendarSpec.fromUrl() });
     };
   }
 
@@ -77,19 +77,6 @@ class Calendar extends React.Component {
       this.setState({ calendarSpec: newCalendarSpec });
     }
   }
-}
-
-function calendarSpecFromUrl() {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-
-  const date = urlSearchParams.has(CalendarSpec.DATE) ?
-    moment(urlSearchParams.get(CalendarSpec.DATE)) :
-    moment();
-
-  const calendarType = urlSearchParams.get(CalendarSpec.CALENDAR_TYPE) ||
-    calendarTypes.DAY;
-
-  return new CalendarSpec(calendarType, date);
 }
 
 export default Calendar;

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 import Moment from "lib/moment";
 
 import * as calendarTypes from "constants/calendar_types";
@@ -5,6 +7,20 @@ import * as calendarTypes from "constants/calendar_types";
 class CalendarSpec {
   static CALENDAR_TYPE = "calendarType";
   static DATE = "date";
+
+  static fromUrl() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+
+    const date =
+      urlSearchParams.has(CalendarSpec.DATE) ?
+        moment(urlSearchParams.get(CalendarSpec.DATE)) :
+        moment();
+
+    const calendarType =
+      urlSearchParams.get(CalendarSpec.CALENDAR_TYPE) || calendarTypes.DAY;
+
+    return new CalendarSpec(calendarType, date);
+  }
 
   static day(date) {
     return new CalendarSpec(calendarTypes.DAY, date);
